@@ -63,7 +63,7 @@
  <div class="tm-middle">
 	 <div class="uk-container uk-container-center">
 		 <a href="tasks.php" class="uk-icon-button uk-icon-arrow-circle-left"></a> Go back
-		 <h1 class="tm-article-title">Categories</h1>
+		 <h1 class="tm-article-title">Assign profiles</h1>
 		 <br>
 	<!--	 <button class="uk-button uk-button-large">Add new category</button>-->
 		<?php
@@ -71,17 +71,40 @@
 			$dbc = mysqli_connect($db_host, $db_user, $db_pw, 'project')
 			or die ('Error connecting to the database server');		
 
-			$query="SELECT * FROM Categories;"
-			or die('Error querying');
-			$result=mysqli_query($dbc,$query);
-			//$check=false;
-			//$category = 0;
-			while($row=mysqli_fetch_array($result))
+			$query="SELECT * FROM Categories;";
+		
+			$result=mysqli_query($dbc,$query)
+				or die('Error querying');
+				
+			$mainquery = "SELECT * FROM register;";
+			
+			$mainresult=mysqli_query($dbc,$mainquery)
+				or die('Error querying');
+			
+			while($mainrow = mysqli_fetch_array($mainresult))
 			{
-					echo '<div class="uk-panel uk-panel-box">';
-					echo '<h3 class="tm-article-subtitle">'.$row['catName'].'</h3>';
-					echo '<p>'.$row['catDesc'].'</p></div><br>';
+				echo '<div class="uk-panel uk-panel-box">';
+				echo $mainrow['name'] . ' ' . $mainrow['rollno'];					
+							
+				while($row=mysqli_fetch_array($result))
+				{
+						if($row['id'] != $mainrow['profile'])
+							echo '<a href="assign.php?id=' . $mainrow['id'] . '&pro=' . $row['id'].'">';
+						echo ' <button class="uk-button';
+						if($row['id'] == $mainrow['profile'])
+							echo ' uk-button-large uk-button-success';
+						echo '">'.$row['catName'].'</button>  ';
+						if($row['id'] != $mainrow['profile'])
+							echo '</a>';
+						
+						
+						
+				}
+				echo '</div><br>';
+				$result=mysqli_query($dbc,$query)
+					or die('Error querying');
 			}
+			
 			mysqli_close($dbc);
 	?>
 	
@@ -144,5 +167,6 @@
 	
 	</html>
 	
+
 
 

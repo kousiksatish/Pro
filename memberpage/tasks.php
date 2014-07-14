@@ -1,4 +1,4 @@
-<!--Admin-->
+<!--Member-->
 <?php
 	
 	session_start();
@@ -15,10 +15,10 @@
 		$result = mysqli_query($dbc,$query)
 			or die ('Error querying');
 		$row = mysqli_fetch_array($result);
-		if($row['admin']!=1)
-			header("location:../login.php");
-		if($row['admin']==0&&$row['approved']==1)
-			header("location:../memberpage");
+		if($row['admin']==1)
+			header("location:../adminpage/tasks.php");
+		if($row['admin']==0&&$row['approved']==0)
+			header("location:../index.php");
 			
 	}
 
@@ -64,14 +64,11 @@
  <div class="tm-middle">
 	 <div class="uk-container uk-container-center">
 
-	<h1>Welcome admin</h1>
-		<a href="newtask.php"><button class="uk-button uk-button-large">Create new task</button></a>
-		<a href="categories.php"><button class="uk-button uk-button-large">Manage categories</button></a>
-		<a href="assignprofile.php"><button class="uk-button uk-button-large">Assign profiles</button></a>
-		
-		<?php
+	<h1>Welcome Member</h1>
+	
+	<?php
 		echo '<h3 class="tm-article-subtitle">In progress</h3>';
-		$query = "SELECT * FROM tasks WHERE tasks.status='on' ORDER BY givenon DESC;";
+		$query = "SELECT * FROM tasks,".$myrollno."tasks WHERE tasks.id=".$myrollno."tasks.taskid AND tasks.status='on';";
 		
 		$result = mysqli_query($dbc,$query)
 			or die("Error querying");
@@ -95,14 +92,14 @@
 				echo $subrow['name'].', ';
 			}
 			$taskid = $row['taskid'];
-			echo '<a href="../viewtask.php?id='.$row['id'] .'"><button class="uk-button">View task details</button></a>';
-			echo ' <a href="../completed.php?id='.$row['id'].'"><button class="uk-button uk-button-success">Mark as completed</button></a>';
+			echo '<a href="../viewtask.php?id='.$taskid .'"><button class="uk-button">View task details</button></a>';
+			echo ' <a href="../completed.php?id='.$taskid .'"><button class="uk-button uk-button-success">Mark as completed</button></a>';
 			
 			echo '</div>';
 		}
 		
 		echo '<h3 class="tm-article-subtitle">Completed</h3>';
-			$query = "SELECT * FROM tasks WHERE tasks.status='completed' ORDER BY givenon DESC;";
+		$query = "SELECT * FROM tasks,".$myrollno."tasks WHERE tasks.id=".$myrollno."tasks.taskid AND tasks.status='completed';";
 		$result = mysqli_query($dbc,$query)
 			or die("Error querying");
 		
@@ -125,12 +122,18 @@
 				echo $subrow['name'].', ';
 			}
 			$taskid = $row['taskid'];
-			echo '<a href="../viewtask.php?id='.$row['id'] .'"><button class="uk-button">View task details</button></a>';
+			echo '<a href="../viewtask.php?id='.$taskid .'"><button class="uk-button">View task details</button></a>';
 		
 			
 			echo '</div>';
 		}
 		
-		?>
+		
+		
+		
+		
+	
+	?>
+		
      </div>
 </div>

@@ -1,6 +1,5 @@
-<!--Admin page home-->
-
 <?php
+	
 	session_start();
 	require '../sqlconfig.php';
 	
@@ -17,9 +16,11 @@
 		$row = mysqli_fetch_array($result);
 		if($row['admin']!=1)
 			header("location:../login.php");
+		if($row['admin']==0&&$row['approved']==1)
+			header("location:../memberpage");
 			
 	}
-
+	
 ?>
 
 <!DOCTYPE html>
@@ -42,10 +43,10 @@
                 <a class="uk-navbar-brand uk-hidden-small" href="../../index.html"><img class="uk-margin uk-margin-remove" src="../images/clublogo.png" width="90" height="30" title="UIkit" alt="UIkit"></a>
 
                 <ul class="uk-navbar-nav uk-hidden-small">
-                    <li class="uk-active"><a href="index.php">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li><a href="members.php">Members</a></li>
                      
-                    <li><a href="tasks.php">Tasks</a></li>
+                    <li class="uk-active"><a href="tasks.php">Tasks</a></li>
                     
                 </ul>
 			</div>
@@ -61,8 +62,32 @@
 
  <div class="tm-middle">
 	 <div class="uk-container uk-container-center">
+<?php
+	$id = $_POST['id'];
+	$ass = $_POST['toassign'];
+	$people = join(",",$ass);
+	$number = sizeof($ass);
+	
+	$status = "on";
+	$givenon = date("Y-m-d");
+	$dbc = mysqli_connect($db_host, $db_user, $db_pw, 'project')
+				or die ('Error connecting to database');
+	
+	$query = "UPDATE tasks SET people = '$people', number = $number, status = '$status', givenon = '$givenon' WHERE id=$id;";	
+	
+	$result = mysqli_query($dbc,$query)
+		or die ('Error querying');
+	
+	for($i=0;$i<$number;$i++)
+	{
+		$currid = $ass[$i];
+		$querypart = "INSERT INTO " . $currid ."tasks (taskid, status)
+						VALUES ('$id', '$status');";
+		mysqli_query($dbc,$querypart);
+	}
+	header("location:../viewtask.php?id=$id");
+?>	
 
-	<h1>Welcome admin</h1>
-                            
+		
      </div>
 </div>

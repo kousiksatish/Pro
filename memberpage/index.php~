@@ -1,4 +1,4 @@
-<!--Admin page home-->
+<!--Member page home-->
 
 <?php
 	session_start();
@@ -15,10 +15,13 @@
 		$result = mysqli_query($dbc,$query)
 			or die ('Error querying');
 		$row = mysqli_fetch_array($result);
-		if($row['admin']!=1)
-			header("location:../login.php");
-			
+		if($row['admin']==1)
+			header("location:../adminpage");
+		if($row['admin']!=0&&$row['approved']!=1)
+			header("location:../login.php");	
 	}
+	
+	
 
 ?>
 
@@ -57,12 +60,12 @@
 			</div>
 			 </div>
            </div>
-        </nav>
+        </nav>	
 
  <div class="tm-middle">
 	 <div class="uk-container uk-container-center">
 
-	<h1>Welcome admin</h1>
+	<h1>Welcome member</h1>
                             
      </div>
 </div>

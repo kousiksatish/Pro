@@ -1,6 +1,5 @@
-<!--Admin page home-->
-
 <?php
+	
 	session_start();
 	require '../sqlconfig.php';
 	
@@ -15,8 +14,10 @@
 		$result = mysqli_query($dbc,$query)
 			or die ('Error querying');
 		$row = mysqli_fetch_array($result);
-		if($row['admin']!=1)
-			header("location:../login.php");
+		if($row['admin']==1)
+			header("location:../adminpage/meeting.	php");
+		if($row['admin']==0&&$row['approved']==0)
+			header("location:../index.php");
 			
 	}
 
@@ -42,9 +43,9 @@
                 <a class="uk-navbar-brand uk-hidden-small" href="../../index.html"><img class="uk-margin uk-margin-remove" src="../images/clublogo.png" width="90" height="30" title="UIkit" alt="UIkit"></a>
 
                 <ul class="uk-navbar-nav uk-hidden-small">
-                    <li class="uk-active"><a href="index.php">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <li><a href="members.php">Members</a></li>
-                     
+                    <li class="uk-active"><a href="meeting.php">Meetings</a></li>
                     <li><a href="tasks.php">Tasks</a></li>
                     
                 </ul>
@@ -57,12 +58,13 @@
 			</div>
 			 </div>
            </div>
-        </nav>
+       </nav>
 
  <div class="tm-middle">
 	 <div class="uk-container uk-container-center">
 
-	<h1>Welcome admin</h1>
+	<h1>Welcome Member</h1>
                             
      </div>
 </div>
+

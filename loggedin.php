@@ -27,6 +27,7 @@
 		{
 			if($row['admin']==1)
 			{
+				$_SESSION['proj']=$myrollno;
 				echo 'You are the admin';
 				$check=true;
 				$category = 1;
@@ -34,6 +35,7 @@
 			}
 			else if($row['approved']==1)
 			{
+				$_SESSION['proj']=$myrollno;
 				echo 'You are approved member';
 				$check = true;
 				$category = 2;
@@ -53,14 +55,14 @@
 	{
 		$_SESSION['prorollno']=$myrollno;
 		if($category == 1)
-			echo '<br><a href="adminpage/index.php">Click here</a> to go to admin page';
+			header("location:adminpage");
 		if($category == 2)
-			echo '<br><a href="memberpage.php">Click here</a> to go to member page';
+			header("location:memberpage");
 		
 	}
 	else
 	{
-		echo '<br><a href="login.php">Click here</a> to go back';	
+		echo '<br><a href="index.php">Click here</a> to go back';	
 	}
 
 	mysqli_close($dbc);
